@@ -1,4 +1,52 @@
 package com.example.payment_service.service.implementaion;
 
-public class MockBankAccountPayment {
+import com.example.payment_service.model.PaidProduct;
+import com.example.payment_service.model.Payment;
+import com.example.payment_service.model.PaymentStatus;
+import com.example.payment_service.model.dto.HandlePaymentRequestDto;
+import com.example.payment_service.model.dto.HandlePaymentResponseDto;
+import com.example.payment_service.model.dto.Products;
+import com.example.payment_service.repository.PaymentRepository;
+import com.example.payment_service.service.exception.EmptyProductsListException;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+
+public class MockBankAccountPayment implements PaymentMethod{
+    private PaymentRepository paymentRepository;
+    @Override
+    public HandlePaymentResponseDto handlePayment(HandlePaymentRequestDto handlePaymentRequestDto) {
+       List<PaidProduct> paidProducts=handlePaymentRequestDto.getProducts().stream()
+               .map(products -> PaidProduct
+                        .builder()
+                        .productId(products.getProductId())
+                        .unitPrice(products.getUnitPrice())
+                        .quantity(products.getQuantity())
+                        .build())
+               .toList();
+         if(paidProducts.isEmpty()){
+             throw new EmptyProductsListException("empty product list");
+         }
+         BigDecimal totalAmount = paidProducts
+                  .stream()
+                  .map(paidProduct -> paidProduct.getUnitPrice().multiply(BigDecimal.valueOf( paidProduct.getQuantity())))
+                  .reduce(BigDecimal.ZERO, BigDecimal::add);
+         Payment payment= paymentRepository.save(Payment.builder()
+                 .statusPayment(PaymentStatus.COMPLETED)
+                 .amount(totalAmount)
+                 .paidProducts(paidProducts)
+                 .userId(handlePaymentRequestDto.getUserId())
+                 .build()
+         );
+         return HandlePaymentResponseDto.builder()
+                 .paymentId(payment.getPaymentId())
+                 .paymentStatus(payment.getStatusPayment())
+                 .createdAt(payment.getCreatedAt())
+                 .products(payment.getPaidProducts().stream()
+                         .map(paidProduct -> Products.builder().productId(paidProduct.getProductId()).unitPrice(paidProduct.getUnitPrice()).quantity(paidProduct.getQuantity()).build())
+                         .toList())
+                 .amount(payment.getAmount())
+                 .build();
+    }
 }

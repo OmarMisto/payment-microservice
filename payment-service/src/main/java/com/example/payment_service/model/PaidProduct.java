@@ -17,6 +17,8 @@ public class PaidProduct {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "paid_product_sec")
     @SequenceGenerator(sequenceName = "paid_product_sec",name = "paid_product_sec" )
     private long paidProductId;
+    @Column(unique = true,nullable = false)
+    private long productId;
     private BigDecimal unitPrice;
     private int quantity;
     @ManyToOne

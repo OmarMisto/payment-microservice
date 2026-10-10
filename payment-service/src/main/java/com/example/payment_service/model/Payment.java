@@ -6,6 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +28,7 @@ public class Payment {
     private PaymentStatus statusPayment;
     private BigDecimal amount;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "payment")
-    private ArrayList<PaidProduct> paidProducts;
+    private List<PaidProduct> paidProducts;
     @Column(unique = true,nullable = false)
     private long userId;
     private final LocalDateTime createdAt=LocalDateTime.now();

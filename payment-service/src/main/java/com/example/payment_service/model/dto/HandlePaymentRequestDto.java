@@ -5,6 +5,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +18,5 @@ public class HandlePaymentRequestDto {
     private final LocalDateTime requestDate = LocalDateTime.now();
     private String cardNo;
     private LocalDateTime expireDate;
-    private ArrayList<Products> products;
+    private List<Products> products;
 }

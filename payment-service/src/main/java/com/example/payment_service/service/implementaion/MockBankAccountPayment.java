@@ -8,13 +8,14 @@ import com.example.payment_service.model.dto.HandlePaymentResponseDto;
 import com.example.payment_service.model.dto.Products;
 import com.example.payment_service.repository.PaymentRepository;
 import com.example.payment_service.service.exception.EmptyProductsListException;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-
+@RequiredArgsConstructor
 public class MockBankAccountPayment implements PaymentMethod{
-    private PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
     @Override
     public HandlePaymentResponseDto handlePayment(HandlePaymentRequestDto handlePaymentRequestDto) {
        List<PaidProduct> paidProducts=handlePaymentRequestDto.getProducts().stream()

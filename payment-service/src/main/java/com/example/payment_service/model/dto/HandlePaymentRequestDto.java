@@ -2,9 +2,7 @@ package com.example.payment_service.model.dto;
 
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,5 +16,5 @@ public class HandlePaymentRequestDto {
     private final LocalDateTime requestDate = LocalDateTime.now();
     private String cardNo;
     private LocalDateTime expireDate;
-    private List<Products> products;
+    private List<Item> products;
 }

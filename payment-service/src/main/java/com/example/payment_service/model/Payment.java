@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +26,9 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentStatus statusPayment;
     private BigDecimal amount;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "payment")
-    private List<PaidProduct> paidProducts;
+    @OneToOne
+    @JoinColumn(name = "duesId")
+    private Dues dues;
     @Column(unique = true,nullable = false)
     private long userId;
     private final LocalDateTime createdAt=LocalDateTime.now();

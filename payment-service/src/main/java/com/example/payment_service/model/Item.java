@@ -2,7 +2,6 @@ package com.example.payment_service.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ManyToAny;
 
 import java.math.BigDecimal;
 @Entity
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class PaidProduct {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "paid_product_sec")
     @SequenceGenerator(sequenceName = "paid_product_sec",name = "paid_product_sec" )
@@ -20,8 +19,9 @@ public class PaidProduct {
     @Column(unique = true,nullable = false)
     private long productId;
     private BigDecimal unitPrice;
+    private long discountPercentage;
     private int quantity;
     @ManyToOne
-    @JoinColumn(name = "paymentId")
-    private Payment payment;
+    @JoinColumn(name = "duesId")
+    private Dues dues;
 }

@@ -1,14 +1,14 @@
 package com.example.payment_service.service.implementaion;
 
-import com.example.payment_service.model.PaidProduct;
 import com.example.payment_service.model.Payment;
 import com.example.payment_service.model.PaymentStatus;
 import com.example.payment_service.model.dto.HandlePaymentRequestDto;
 import com.example.payment_service.model.dto.HandlePaymentResponseDto;
-import com.example.payment_service.model.dto.Products;
+import com.example.payment_service.model.dto.Item;
 import com.example.payment_service.repository.PaymentRepository;
 import com.example.payment_service.service.exception.EmptyProductsListException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,9 +17,10 @@ import java.util.List;
 public class MockBankAccountPayment implements PaymentMethod{
     private final PaymentRepository paymentRepository;
     @Override
+    @Transactional
     public HandlePaymentResponseDto handlePayment(HandlePaymentRequestDto handlePaymentRequestDto) {
-       List<PaidProduct> paidProducts=handlePaymentRequestDto.getProducts().stream()
-               .map(products -> PaidProduct
+       List<com.example.payment_service.model.Item> paidProducts=handlePaymentRequestDto.getProducts().stream()
+               .map(products -> com.example.payment_service.model.Item
                         .builder()
                         .productId(products.getProductId())
                         .unitPrice(products.getUnitPrice())
@@ -42,10 +43,10 @@ public class MockBankAccountPayment implements PaymentMethod{
          );
          return HandlePaymentResponseDto.builder()
                  .paymentId(payment.getPaymentId())
-                 .paymentStatus(payment.getStatusPayment())
+                 .paymentStatus(payment.getStatusPayment().name())
                  .createdAt(payment.getCreatedAt())
                  .products(payment.getPaidProducts().stream()
-                         .map(paidProduct -> Products.builder().productId(paidProduct.getProductId()).unitPrice(paidProduct.getUnitPrice()).quantity(paidProduct.getQuantity()).build())
+                         .map(paidProduct -> Item.builder().productId(paidProduct.getProductId()).unitPrice(paidProduct.getUnitPrice()).quantity(paidProduct.getQuantity()).build())
                          .toList())
                  .amount(payment.getAmount())
                  .build();

@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 public class HandlePaymentResponseDto {
     private long paymentId;
+    private long orderId;
     private String paymentStatus;
     private LocalDateTime createdAt;
     private List<Item> products;

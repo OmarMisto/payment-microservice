@@ -13,8 +13,8 @@ import java.util.List;
 @ToString
 public class HandlePaymentRequestDto {
     private long userId;
+    private long orderId;
     private final LocalDateTime requestDate = LocalDateTime.now();
     private String cardNo;
     private LocalDateTime expireDate;
-    private List<Item> products;
 }

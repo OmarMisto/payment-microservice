@@ -6,5 +6,5 @@ import com.example.payment_service.model.dto.HandlePaymentResponseDto;
 import com.example.payment_service.service.implementaion.PaymentMethod;
 
 public interface IPaymentService {
-    public HandlePaymentResponseDto handlePaymentService(HandlePaymentRequestDto handlePaymentRequestDto,String paymentMethod);
+    public HandlePaymentResponseDto handlePaymentService(HandlePaymentRequestDto handlePaymentRequestDto);
 }

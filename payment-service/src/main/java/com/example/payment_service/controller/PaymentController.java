@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PaymentController {
     private final IPaymentService iPaymentService;
-    @PostMapping("handle/${payment_method}")
-    public ResponseEntity<HandlePaymentResponseDto> handlePaymentController(@RequestBody HandlePaymentRequestDto handlePaymentRequestDto, @PathVariable("payment_method") String paymentMethod){
-        return ResponseEntity.ok().body(iPaymentService.handlePaymentService(handlePaymentRequestDto,paymentMethod));
+    @PostMapping("handle")
+    public ResponseEntity<HandlePaymentResponseDto> handlePaymentController(@RequestBody HandlePaymentRequestDto handlePaymentRequestDto){
+        return ResponseEntity.ok().body(iPaymentService.handlePaymentService(handlePaymentRequestDto));
     }
 }

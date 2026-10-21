@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class Item {
+public class ItemDto {
     private long productId;
     private BigDecimal unitPrice;
-    private long discountPercentage;
+    private Double discountPercentage;
     private int quantity;
 }

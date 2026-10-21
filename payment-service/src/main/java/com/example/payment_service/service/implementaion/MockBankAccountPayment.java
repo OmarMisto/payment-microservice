@@ -5,7 +5,7 @@ import com.example.payment_service.model.Payment;
 import com.example.payment_service.model.PaymentStatus;
 import com.example.payment_service.model.dto.HandlePaymentRequestDto;
 import com.example.payment_service.model.dto.HandlePaymentResponseDto;
-import com.example.payment_service.model.dto.Item;
+import com.example.payment_service.model.dto.ItemDto;
 import com.example.payment_service.repository.DuesRepository;
 import com.example.payment_service.repository.PaymentRepository;
 import com.example.payment_service.service.exception.DuesNotFoundException;
@@ -25,7 +25,7 @@ public class MockBankAccountPayment implements PaymentMethod{
         Dues dues=duesRepository.findByUserIdAndOrderId(handlePaymentRequestDto.getUserId(),handlePaymentRequestDto.getOrderId())
                 .orElseThrow(()->new DuesNotFoundException("dues not found for the requested user and order"));
         BigDecimal amount= dues.getItems().stream()
-                .map(item -> (item.getUnitPrice().multiply(BigDecimal.valueOf( item.getDiscountPercentage()))).multiply(BigDecimal.valueOf(item.getQuantity())))
+                .map(item -> (item.getUnitPrice().subtract((item.getUnitPrice().multiply(BigDecimal.valueOf( item.getDiscountPercentage()))))).multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal::add)
                 .orElseThrow(()->new InvalidAmountException("invalid amount exception"));
          Payment savedPayment= paymentRepository.save(Payment.builder()
@@ -39,7 +39,7 @@ public class MockBankAccountPayment implements PaymentMethod{
                  .orderId(dues.getOrderId())
                  .paymentStatus(savedPayment.getStatusPayment().name())
                  .createdAt(savedPayment.getCreatedAt())
-                 .products(dues.getItems().stream().map(item -> Item.builder().productId(item.getProductId()).unitPrice(item.getUnitPrice()).discountPercentage(item.getDiscountPercentage()).quantity(item.getQuantity()).build()).toList())
+                 .products(dues.getItems().stream().map(item -> ItemDto.builder().productId(item.getProductId()).unitPrice(item.getUnitPrice()).discountPercentage(item.getDiscountPercentage()).quantity(item.getQuantity()).build()).toList())
                  .amount(amount)
                  .build();
     }

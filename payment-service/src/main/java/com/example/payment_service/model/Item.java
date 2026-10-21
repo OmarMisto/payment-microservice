@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 @ToString
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "paid_product_sec")
-    @SequenceGenerator(sequenceName = "paid_product_sec",name = "paid_product_sec" )
-    private long paidProductId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "item_gen")
+    @SequenceGenerator(sequenceName = "item_gen",name = "item_sec" )
+    private long itemId;
     @Column(unique = true,nullable = false)
     private long productId;
     private BigDecimal unitPrice;
-    private long discountPercentage;
+    private Double discountPercentage;
     private int quantity;
     @ManyToOne
     @JoinColumn(name = "duesId")

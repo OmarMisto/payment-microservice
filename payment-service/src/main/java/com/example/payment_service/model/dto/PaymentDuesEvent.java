@@ -15,6 +15,6 @@ public class PaymentDuesEvent {
     private long orderId;
     private long userId;
     private LocalDateTime date;
-    private List<Item> items;
+    private List<ItemDto> items;
 
 }

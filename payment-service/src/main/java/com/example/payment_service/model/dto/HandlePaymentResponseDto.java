@@ -17,6 +17,6 @@ public class HandlePaymentResponseDto {
     private long orderId;
     private String paymentStatus;
     private LocalDateTime createdAt;
-    private List<Item> products;
+    private List<ItemDto> products;
     private BigDecimal amount;
 }
